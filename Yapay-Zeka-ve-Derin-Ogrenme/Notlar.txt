@@ -1,0 +1,13 @@
+MNIST Dataseti
+* El yazısı rakamlardan oluşur
+* 28x28 pixel
+* Toplam 70.000 resim mevcut (60.000 eğitim - 10.000 test)
+
+Layer (Katman) Türleri
+* Fully connected (dense) layers
+* Convolutional layers
+* Pooling layers
+* Recuurent layers
+* Normalizastion layers
+* ...
+
