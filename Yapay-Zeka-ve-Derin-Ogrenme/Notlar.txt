@@ -11,3 +11,65 @@ Layer (Katman) Türleri
 * Normalizastion layers
 * ...
 
+Aktivasyon Fonksiyonları
+1. Sigmoid
+	* Sayıları [0, 1] arasına sıkıştırır
+	* Geçmişte oldukça popülerdi
+	- Gradient ölümü olabiliyor
+	- 0 odaklı değil
+	- exp() hesaplanması yavaş
+2. tanh
+	* [-1, 1] arasına sıkıştırır
+	+ Sıfır odaklı
+	- Hala gradient ölümü olabiliyor
+3. ReLU
+	* Negatifse 0, pozitifse olduğu gibi geçiyor
+	+ Gradient ölümü yok
+	+ Bilgisayarın hesaplaması daha kolay
+	+ Biyolojik nörona daha yakın
+	- 0 odaklı değil
+	- Bazı nöronlar ölebiliyor
+4. Leaky ReLU
+	+ ReLU'nun getirdiği tüm avantajlar
+	+ Sıfır odaklı olduğu için nöron ölümü yok
+5. ELU - Exponential Linear Unit
+	+ ReLU'nun getirdiği tüm avantajlar
+	- exp() kullandığı için biraz daha yavaş
+6. Maxout
+	* ReLU ve Leaky ReLU'yu genelleştiriyor
+	* Nöron ölümü yok
+	- Parametre sayısını iki katına çıkarıyor
+
+* İlk olarak ReLU kullanın.
+* Leaky ReLU, mevcut, ELU deneyebilirsiniz. Ancak bu fonksiyonlar henüz olgunlaşmamış, deneme aşamasındalar.
+* tanh kullanılabilir ama ReLU çoğu durumda daha iyi olacaktır.
+* Sigmoid kullanmayın.
+
+Loss (Cost) Fonksiyonları
+* Tahmin edilen değerin gerçek değerden ne kadar uzak olduğunu hesaplar.
+* Eğitim esnasında zamanla sıfıra yaklaşmasını bekleriz.
+* L2 Loss Fonksiyonu en çok kullanılan fonksiyondur.
+* Cross Entropy Loss Fonksiyonu
+
+Öğrenme Oranı (Learning Rate)
+* Atacağımız adımı sembolize eder
+* Çok küçük bir sayı atanır (Örn. 0.0005)
+* Büyük olursa minimuma ulaşılamaz
+* Küçük olursa model yavaş öğrenir
+
+BackPropagation
+* Backpropagation yapay sinir ağlarında her nöronun hataya ne kadar katkısı olduğunu hesaplamak için kullanılır.
+* Weight ve bias değerlerini ayarlar.
+
+Overfitting
+* Eğitilen modelin eğitim setini çok iyi öğrenip genelleştirme yapamamasına overfitting denir.
+* Underfitting ise tam tersi, modelin veriyi hiç öğrenememesi.
+
+Regularization (Düzenlileştirme)
+Regularization modelde kompleksliği cezalandırarak daha iyi genelleştirme yapmasını sağlar.
+Regularization yöntemleri şu şekilde:
+* Daha fazla data ekle
+* Data Augmentation
+* Loss fonksiyonuna ekstra fonksiyon ekle
+* Dropout
+
