@@ -3,6 +3,7 @@ MNIST Dataseti
 * 28x28 pixel
 * Toplam 70.000 resim mevcut (60.000 eğitim - 10.000 test)
 
+
 Layer (Katman) Türleri
 * Fully connected (dense) layers
 * Convolutional layers
@@ -10,6 +11,7 @@ Layer (Katman) Türleri
 * Recuurent layers
 * Normalizastion layers
 * ...
+
 
 Aktivasyon Fonksiyonları
 1. Sigmoid
@@ -45,11 +47,13 @@ Aktivasyon Fonksiyonları
 * tanh kullanılabilir ama ReLU çoğu durumda daha iyi olacaktır.
 * Sigmoid kullanmayın.
 
+
 Loss (Cost) Fonksiyonları
 * Tahmin edilen değerin gerçek değerden ne kadar uzak olduğunu hesaplar.
 * Eğitim esnasında zamanla sıfıra yaklaşmasını bekleriz.
 * L2 Loss Fonksiyonu en çok kullanılan fonksiyondur.
 * Cross Entropy Loss Fonksiyonu
+
 
 Öğrenme Oranı (Learning Rate)
 * Atacağımız adımı sembolize eder
@@ -57,13 +61,16 @@ Loss (Cost) Fonksiyonları
 * Büyük olursa minimuma ulaşılamaz
 * Küçük olursa model yavaş öğrenir
 
+
 BackPropagation
 * Backpropagation yapay sinir ağlarında her nöronun hataya ne kadar katkısı olduğunu hesaplamak için kullanılır.
 * Weight ve bias değerlerini ayarlar.
 
+
 Overfitting
 * Eğitilen modelin eğitim setini çok iyi öğrenip genelleştirme yapamamasına overfitting denir.
 * Underfitting ise tam tersi, modelin veriyi hiç öğrenememesi.
+
 
 Regularization (Düzenlileştirme)
 Regularization modelde kompleksliği cezalandırarak daha iyi genelleştirme yapmasını sağlar.
@@ -72,4 +79,41 @@ Regularization yöntemleri şu şekilde:
 * Data Augmentation
 * Loss fonksiyonuna ekstra fonksiyon ekle
 * Dropout
+
+
+Konvolüsyonel Sinir Ağları (CNN - Convolutional Neural Network - ConvNet)
+* Filtreler Nasıl Kayıyor?
+7x7 input
+3x3 filtre
+5x5 output
+
+Filtreler farklı sayıda kaydırılabilir, buna stride deniliyor.
+7x7 input
+3x3 filtre
+stride = 2
+3x3 output
+
+stride = 3 yapılırsa sığmayacağından uygulanamıyor
+
+Hesaplama
+((N - F) / stride) + 1
+N: resim boyutu
+F: filtre boyutu
+stride: kaydırma sayısı
+
+Boyutun Küçülmesine Çözüm
+Kenarlara 0 koyarsak, boyut aynı kalacaktır.
+
+Pooling Layer
+* Parametre sayısını azaltmak için max pooling kullanıyoruz.
+* Her aktivasyon haritası için ayrı ayrı uygulanır. (Derinliği etkilemez)
+* Genelde pooling ile boyutlar yarıya indirilir. Bunu yapmanın en yaygın yolu max pooling dir.
+	4x4 input
+	2x2 filtre
+	strides = 2 (çünkü pixellerin çakışmasını istemiyoruz)
+	2x2 output
+	Burada oluşan output içerisindeki değerler, 2x2 filtre uygularkenki matris içindeki max değerlerdir.
+
+
+
 

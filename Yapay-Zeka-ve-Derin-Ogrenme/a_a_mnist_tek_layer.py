@@ -1,3 +1,7 @@
+import os
+os.environ["HTTP_PROXY"] = "http://atlasproxy.isbank:8080"
+os.environ["HTTPS_PROXY"] = "http://atlasproxy.isbank:8080"
+
 import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
 
@@ -31,3 +35,10 @@ def training_step(iterations):
         feed_dict_train = {x: x_batch, y_true: y_batch}
         sess.run(optimize, feed_dict=feed_dict_train)
 
+def test_accuracy():
+    feed_dict_test = {x: mnist.test.images, y_true: mnist.test.labels}
+    acc = sess.run(accuracy, feed_dict=feed_dict_test)
+    print("Tessting accuracy: ", acc)
+
+training_step(2000)
+test_accuracy()
