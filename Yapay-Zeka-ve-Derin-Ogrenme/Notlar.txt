@@ -115,5 +115,11 @@ Pooling Layer
 	Burada oluşan output içerisindeki değerler, 2x2 filtre uygularkenki matris içindeki max değerlerdir.
 
 
+CNN Mimarileri
+Günümüzün imagenet üzerinde iyi sonuçlar almış önemli cnn mimarileri:
+* AlexNet
+* VGG
+* GoogLeNet
+* ResNet
 
 
