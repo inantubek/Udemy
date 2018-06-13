@@ -1,8 +1,11 @@
 # Byte-compiled / optimized / DLL files
-__pycache__
+__pycache__/
 
 # Jupyter Notebook
-.ipynb_checkpoints
+.ipynb_checkpoints/
 
 # PyCharm
-.idea
+.idea/
+
+# Yapay-Zeka-ve-Derin-Ogrenme Data
+Yapay-Zeka-ve-Derin-Ogrenme/data/
