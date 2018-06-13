@@ -123,3 +123,12 @@ Günümüzün imagenet üzerinde iyi sonuçlar almış önemli cnn mimarileri:
 * ResNet
 
 
+Yinelenen Sinir Ağları - RNN
+* Yinelenen sinir ağları döngüsel olarak çalışır. Bu sayede önceden gördüğü şeyleri aklında tutarak ona göre sonuç üretir.
+* Konuşma tanıma, doğal dil işleme, çeviri yapma, ritim öğrenme, müzik üretme gibi birçok alanda kullanılır.
+
+Long Short Term Memory (LSTM)
+Kullanılış biçimleri:
+- Peephole
+- Gated Recurrent Unit (GRU)
+
