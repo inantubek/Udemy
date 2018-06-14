@@ -1,0 +1,123 @@
+YÜZ TANIMA - OPENCV
+Viola-Jones Algoritması
+* Bilgisayar Görüşü (Computer Vision) için en güçlü algoritmalardan birisidir.
+* opencv algoritmasının temelidir.
+* Algoritma resimdeki renkleri gri tonlara çevirerek çalışır.
+
+
+Haar-like Özellikler
+* Viola-Jones algoritması Haar-like mantığını kullanıyor.
+* Üç çeşit özellik var:
+	- Kenar Özellikler (İki kutu gibi, biri siyah, diğeri beyaz)
+	- Çizgi Özellikler (Üç kutu gibi, ortası siyah, kenarlar beyaz)
+	- Dört-Kare Özellikler (2x2 kutu gibi, bir diagonal siyah, diğer diagonal beyaz)
+* Hesaplama yaparken kutuların pixellere bölünüğünü düşün.
+  Her pixelde 0-1 aralığında değer olsun. 0 a ne kadar yakınsa o kadar beyaz, 1 e ne kadar yakınsa o kadar siyah olacak.
+  Her kutudaki pixellerin ortalaması alınır. Ve bu ortamaların farkı alınır.
+
+
+Integral Resmi
+* Viola-Jones algoritması Haar-like hesaplamayı kullanıyor fakat çok yavaş çalışıyor.
+* Bunun yerine 8x10 matris integral resmi ile hesaplama yapılıyor:
+  Resim siyah-beyaz yapılarak, her pixel 0-10 aralığında değer alıyor.
+  Integral Resmi matrisinde, her pixelin solundaki ve yukarısındaki pixellerin toplamı yazılıyor.
+  Daha sonra belli bir alan alınacağı zaman bu toplamlar üzerinde işlemler yapılıyor:
+     A: Seçilen alanın sağ alt köşesinin toplamı
+	 B: Seçilen alanın sağ üst köşesinin bir üstünün toplamı
+	 C: Seçilen alanın sol üst köşesinin sol çapraz köşesinin toplamı
+	 D: Seçilen alanın sol alt köşesinin solundakinin toplamı
+	 Sonuç = A - B + C - D
+
+
+Adaptive Boosting (Adaboost)
+* Bu teknik ile resimdeki Haar-like özelliklerini tek tek denemek yerine,
+  sınırlı özellik ile birbirinin açığını kapatan zayıf sınıflandırıcıları bularak,
+  güçlü bir sınıflandırıcı yaratır.
+* Bilgiyarın yükünü azaltmöak için kullanıyoruz.
+
+
+Cascading
+* Resimde alt pencrelerle kaydırma yapılarak tüm resim taranır.
+  Her pencere içerisinde belli bir özellik aranır, burun gibi.
+  Varsa diğer özelliğe geçilir, yoksa alt pencere red edilir.
+  Fakat burada tek tek özellik aramak yerine,
+  en önemli birkaç özelliğe birden bakarak, işlem yükünü azaltıyoruz.
+
+
+NESNE TANIMA
+Bölge Önerisi
+* Bir resimde bulunan nesneleri bulmak için resimde pencerelere oluşturarak resimde gezdirilir.
+  Ayrıca o pencere içerisinde de alt pencereler oluşturarak arama yapar.
+  Bu işlem çok fazla bilgisayar gücü gerektireceğinden bölge önerisi tekniği kullanılır.
+* Nesne bulunması olasılığı olan bölgeler belirlenir.
+* 2000 civarında öneri birkaç saniye içerisinde yapılabiliyor.
+* Bu bölgeler resimdeki renklerin tonlarına göre işaretlendiriliyor. (Selective Search Segmentation)
+
+
+R-CNN: Region-based Convolutional Neural Network
+* R-CNN de bölge önerisi kullanılıyor. Buna Region-of-Interest(RoI) (ilgi bölgesi) Pooling deniliyor.
+* Bulunan bölgeler farklı ölçülerde olacak. Bunları konvolüsyonel sinir ağlarından geçirmek için boyutlar eşitleniyor.
+* O bölgede sınıflandırmak yapmak için SVM kullanılıyor. Sınırlar için linear regresyon kullanılıyor.
+
+R-CNN'in zayıf noktaları:
+- Softmax sınıflandırıcı ile ağ eğitiliyor. (log loss)
+- SVM eğitiliyor. (hinge loss)
+- Sınırlayıcılar eğitiliyor. (least squares)
+* Eğitim çok yavaş (~84 saat)
+* Tanıma çok yavaş (~47 saniye)
+
+Fast R-CNN
+* R-CNN'in zayıf noktaları nedeniyle geliştirildi. R-CNN ile benzer bir yapıda, sadece hızlandırmak farklı teknikler kullanılıyor.
+* Bölge önerisi yapmak yerine, tüm resim konvolüsyonel sinir ağlarından (ConvNet) geçiriliyor.
+  Daha sonra orjinal resme uyan yüksek çözünürlüklü bir Conv5 Özellik Haritası çıkarılıyor.
+  Bu özellik haritasında selective search ile bölge önerisi çıkarılıyor.
+  Her bölgeyi ayrı ayrı sinir ağından geçirmek yerine, özellik haritasını bir kere sinir ağından geçiriyoruz.
+  Bu sayede ciddi anlamda zaman kazanabiliyoruz.
+  Daha sonra önerilen bölgeleri alıp fully connected layer'a bağlıyoruz.
+  Aynı şekilde layer'a input verirken boyutların eşit olması gerekiyor yani roi pooling uygulanıyor.
+  Bu işlemi yapan layer'a parallel pooling layer deniliyor.
+  R-CNN'den farklı olarak sınıflandırma yaparken SVM yerine softmax kullanılıyor.
+* Fast R-CNN test aşamasının zamanının çoğunu bölge önerisi yapmakla harcıyor.
+  Selective Search ile bölge bulunması yaklaşık 2sn alıyor.
+  Sinir ağları ile yapılan işlem 1sn altında bitiyor.
+  Bu sebeple bir darboğaz oluşuyor.
+  Bölge önerilerinin daha hızlı bir şekilde yapmanın yolunu bulabilirsek modeli ciddi bir şekilde hızlandırabiliriz.
+  
+Faster R-CNN
+* Faster R-CNN yukarıdaki cümledeki sorunu çözmek için geliştirildi.
+* Selective Search ile bölge önerisi almak yerine bu önerileri network içinde yaparak hız kazanabiliyoruz.
+  Bu ağa Region Proposal Network (RPN) deniliyor.
+* Bu yöntemde eğitilmesi gereken 4 farklı parametre çıkıyor:
+	- RPN Sınıflandırıcı: Nesne / Nesne değil
+	- RPN Sınırlayıcı
+	- Son Sınıf Skorları: Nesne sınıflandırma
+	- Son Sınırlar
+
+
+SSD: Single Shot MultiBox Detector
+* SSD ile tek seferde nesne tanıma yapılıyor.
+* Resim CNN'den geçirilerek farklı boyutlarda özellik haritataları çıkarılıyor.
+  Tüm özellik haritalarında 3x3 filtre yardımı ile az miktarda sınırlayıcı dikdörtgenler elde ediyoruz.
+  Her dikdörtgen için hem sınırlar hem de sınıflandırmalar belirleniyor.
+  Bu dikdörtgenler her aktivasyon haritasında olduğu için hem küçük nesneleri hem de büyük nesneleri tespit edebiliyor.
+  Eğitim esnasında bu doğru olan sınırlar ile tahmin edilen sınırlar karşılaştırılıyor.
+  En iyi tahmin yapan ve 0.5 üzerindeki dikdörtgenler pozitif oalrak etiketleniyor.
+
+YOLO: You only Look Once
+* SSD ile benzerdir. Birçok farklı kaynak tarafından SSD'nin daha hızlı çalıştığı ispatlandı.
+
+
+Ne Kullanmalı?
+* Faster R-CNN daha isabetli
+* SSD daha hızlı
+* Sonuç olarak; hız önemliyse SSD, isabet önemliyse Faster R-CNN kullanılır.
+
+Mask R-CNN
+* Bir nesnenin resimde kapladığı tüm pixelleri tespit etme işlemine Image Segmentation deniliyor.
+* Temel olarak Faster R-CNN ile benzer yapıdadır.
+* Faster R-CNN yöntemini kullanarak Image Segmentation ile nesneleri maskeliyor.
+  Farklı olarak nesne maskeleme yapmak için farklı bir dal daha var.
+  Bu ayrılan dal Fully Convolutional Network dür. Fully Connected Layer'ı olmayan konvolüsyonel sinir ağlarına denir.
+  Bu ağda input olarak Faster R-CNN'den gelen özellik haritasını alıyor.
+  Output olarak 1 ve 0'lardan oluşan bir matrix elde ediyoruz. Bu matrixte maskeleme olması gereken yerler 1, olmaması gereken yerler 0.
+
