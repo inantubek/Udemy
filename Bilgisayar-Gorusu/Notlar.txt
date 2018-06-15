@@ -121,3 +121,8 @@ Mask R-CNN
   Bu ağda input olarak Faster R-CNN'den gelen özellik haritasını alıyor.
   Output olarak 1 ve 0'lardan oluşan bir matrix elde ediyoruz. Bu matrixte maskeleme olması gereken yerler 1, olmaması gereken yerler 0.
 
+
+GANs: Generative Adversarial Networks
+* GANs'i oluşturan iki tane ana yapı vardır: Generative vs. Discriminative Algorithms
+	- G: Generative (Üretici)
+	- D: Discriminative (Ayırt Edici)
