@@ -27,9 +27,4 @@ with open("entries.txt","w",encoding = "UTF-8") as file:
         file.write("***********************************\n")
         entryCount += 1
 
-
-
 browser.close()
-
-
-
